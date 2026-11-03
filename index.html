@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BelajarKu - Les Privat & Kursus Online</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+:root{--pri:#2f5bea;--pri-d:#1f43b8;--bg:#f4f6fb;--card:#fff;--tx:#1d2433;--mut:#6b7488;--bd:#e2e6f0;--ok:#16a34a;--warn:#d97706;--err:#dc2626}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx)}
+nav{background:#fff;border-bottom:1px solid var(--bd);padding:12px 24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+nav .brand{font-weight:800;color:var(--pri);font-size:20px;text-decoration:none;margin-right:auto}
+nav a{color:var(--tx);text-decoration:none;font-size:14px}
+nav a:hover{color:var(--pri)}
+main{max-width:1100px;margin:24px auto;padding:0 16px}
+h1{font-size:26px;margin:0 0 6px}h2{font-size:20px;margin:0 0 12px}
+.sub{color:var(--mut);margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px}
+.card h3{margin:0 0 6px;font-size:17px}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600;background:#e8edff;color:var(--pri)}
+.b-ok{background:#dcfce7;color:var(--ok)}.b-warn{background:#fef3c7;color:var(--warn)}.b-err{background:#fee2e2;color:var(--err)}.b-gray{background:#eceff5;color:var(--mut)}
+.price{font-size:20px;font-weight:700;margin:10px 0}
+button,.btn{background:var(--pri);color:#fff;border:0;border-radius:8px;padding:9px 16px;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{background:var(--pri-d)}
+.btn-o{background:#fff;color:var(--pri);border:1px solid var(--pri)}.btn-o:hover{background:#eef2ff}
+.btn-r{background:var(--err)}.btn-r:hover{background:#b91c1c}.btn-g{background:var(--ok)}.btn-g:hover{background:#15803d}
+.btn-sm{padding:5px 10px;font-size:12px}
+label{display:block;font-size:13px;margin:12px 0 4px;color:var(--mut)}
+input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--bd);border-radius:8px;font-size:14px;background:#fff;font-family:inherit}
+.form{max-width:440px;margin:30px auto}
+table{width:100%;border-collapse:collapse;font-size:14px;background:#fff}
+th,td{padding:10px 12px;border-bottom:1px solid var(--bd);text-align:left}
+th{background:#f0f3fa;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+td.r,th.r{text-align:right}
+.tw{overflow-x:auto;border:1px solid var(--bd);border-radius:12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
+.stat .n{font-size:24px;font-weight:700;margin-top:4px}.stat .l{color:var(--mut);font-size:13px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>div{flex:1;min-width:150px}
+.alert{padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:14px}
+.alert-err{background:#fee2e2;color:var(--err)}.alert-ok{background:#dcfce7;color:var(--ok)}.alert-info{background:#e8edff;color:var(--pri-d)}
+.hero{background:linear-gradient(135deg,#2f5bea,#6a8cff);color:#fff;border-radius:16px;padding:36px;margin-bottom:24px}
+.hero p{max-width:560px;opacity:.95}
+.pm{display:flex;gap:10px;flex-wrap:wrap}
+.pm label{flex:1;min-width:140px;border:1px solid var(--bd);border-radius:10px;padding:12px;cursor:pointer;margin:0;color:var(--tx);display:flex;gap:8px;align-items:center}
+.pm input{width:auto}
+.sim{background:#fffbeb;border:1px dashed var(--warn);border-radius:10px;padding:14px;margin-top:16px;font-size:14px}
+.qr{width:150px;height:150px;background:repeating-conic-gradient(#111 0 25%,#fff 0 50%) 0 0/20px 20px;border:8px solid #fff;outline:1px solid var(--bd);margin:8px 0}
+.invoice{background:#fff;max-width:760px;margin:0 auto;padding:36px;border:1px solid var(--bd);border-radius:12px}
+.invoice .hd{display:flex;justify-content:space-between;border-bottom:2px solid var(--pri);padding-bottom:14px;margin-bottom:18px}
+.invoice .brand{font-size:24px;font-weight:800;color:var(--pri)}
+.stamp{display:inline-block;border:3px solid var(--ok);color:var(--ok);padding:4px 14px;font-weight:800;transform:rotate(-6deg);border-radius:6px}
+.stamp.u{border-color:var(--warn);color:var(--warn)}
+footer{text-align:center;color:var(--mut);font-size:12px;padding:30px}
+@media print{
+  nav,footer,.no-print{display:none!important}
+  body{background:#fff}main{margin:0;max-width:none;padding:0}
+  .invoice{border:0;padding:0}
+}
+</style>
+</head>
+<body>
+<nav class="no-print" id="nav"></nav>
+<main id="app"></main>
+<footer class="no-print">BelajarKu &middot; Demo tugas &middot; Pembayaran menggunakan simulator (bukan transaksi sungguhan)</footer>
+
+<script>
+/* ============ DATABASE (localStorage) ============ */
+const KEY='belajarku_db_v1';
+function seed(){
+  return {
+    seq:{order:3,user:3,service:6},
+    users:[
+      {id:1,nama:'Administrator',email:'admin@belajarku.id',password:'admin123',role:'admin'},
+      {id:2,nama:'Budi Siswa',email:'siswa@belajarku.id',password:'siswa123',role:'siswa'}
+    ],
+    services:[
+      {id:1,nama:'Les Matematika SMA',tipe:'Les Privat',harga:120000,satuan:'pertemuan',desc:'Tutor datang/online, materi sesuai kurikulum dan persiapan UTBK.'},
+      {id:2,nama:'Les Bahasa Inggris',tipe:'Les Privat',harga:100000,satuan:'pertemuan',desc:'Conversation, grammar, TOEFL/IELTS preparation.'},
+      {id:3,nama:'Kursus Pemrograman Web',tipe:'Kursus Online',harga:450000,satuan:'paket',desc:'HTML, CSS, JavaScript dan PHP dari dasar hingga proyek.'},
+      {id:4,nama:'Kursus Desain Grafis',tipe:'Kursus Online',harga:350000,satuan:'paket',desc:'Canva, Figma dan dasar desain visual untuk pemula.'},
+      {id:5,nama:'Kursus Keterampilan Digital',tipe:'Kursus Online',harga:250000,satuan:'paket',desc:'Microsoft Office, Google Workspace, dan digital marketing dasar.'}
+    ],
+    orders:[
+      {id:1,invoice:'INV-20261101-0001',userId:2,serviceId:1,serviceName:'Les Matematika SMA',tipe:'Les Privat',harga:120000,qty:4,total:480000,jadwal:'2026-11-05',catatan:'',status:'paid',metode:'QRIS',createdAt:'2026-11-01T09:10:00',paidAt:'2026-11-01T09:15:00',ref:'SIM-A1B2C3'},
+      {id:2,invoice:'INV-20261102-0002',userId:2,serviceId:3,serviceName:'Kursus Pemrograman Web',tipe:'Kursus Online',harga:450000,qty:1,total:450000,jadwal:'2026-11-08',catatan:'',status:'paid',metode:'Virtual Account BCA',createdAt:'2026-11-02T13:00:00',paidAt:'2026-11-02T13:04:00',ref:'SIM-D4E5F6'}
+    ]
+  };
+}
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||seed();
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+save();
+const session={get:()=>JSON.parse(sessionStorage.getItem('u')||'null'),set:u=>sessionStorage.setItem('u',JSON.stringify(u)),clear:()=>sessionStorage.removeItem('u')};
+
+/* ============ HELPERS ============ */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rp=n=>'Rp '+Number(n||0).toLocaleString('id-ID');
+const tgl=d=>d?new Date(d).toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'}):'-';
+const tglw=d=>d?new Date(d).toLocaleString('id-ID',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'-';
+const stLabel={pending:['Menunggu Pembayaran','b-warn'],paid:['Lunas','b-ok'],failed:['Gagal','b-err'],cancelled:['Dibatalkan','b-gray']};
+const stBadge=s=>`<span class="badge ${stLabel[s][1]}">${stLabel[s][0]}</span>`;
+const pad=(n,l=4)=>String(n).padStart(l,'0');
+const today=()=>new Date().toISOString().slice(0,10);
+const go=h=>{location.hash=h};
+const sv=document.createElement('div');
+function msg(t,type='err'){return t?`<div class="alert alert-${type}">${esc(t)}</div>`:''}
+function guard(role){const u=session.get();if(!u){go('#/login');return null}if(role&&u.role!==role){go('#/');return null}return u}
+
+/* ============ NAV ============ */
+function renderNav(){
+  const u=session.get();let h='<a class="brand" href="#/">📚 BelajarKu</a><a href="#/">Layanan</a>';
+  if(!u)h+='<a href="#/login">Masuk</a><a href="#/register">Daftar</a>';
+  else if(u.role==='admin')h+='<a href="#/admin">Dashboard</a><a href="#/admin/layanan">Kelola Layanan</a><a href="#/admin/orders">Pesanan</a><a href="#/admin/laporan">Laporan Keuangan</a>';
+  else h+='<a href="#/orders">Pesanan Saya</a>';
+  if(u)h+=`<span style="color:var(--mut);font-size:13px">${esc(u.nama)} (${u.role})</span><a href="#/logout">Keluar</a>`;
+  $('#nav').innerHTML=h;
+}
+
+/* ============ PAGES ============ */
+function pageHome(){
+  const u=session.get();
+  $('#app').innerHTML=`
+  <div class="hero"><h1>Belajar jadi lebih mudah</h1>
+    <p>Pesan les privat dan kursus online untuk matematika, bahasa Inggris, pemrograman, desain, dan keterampilan digital. Pilih layanan, bayar, dan jadwal langsung terkonfirmasi.</p></div>
+  <h2>Daftar Layanan</h2>
+  <div class="grid">${db.services.map(s=>`
+    <div class="card"><span class="badge">${esc(s.tipe)}</span>
+      <h3 style="margin-top:10px">${esc(s.nama)}</h3>
+      <div style="color:var(--mut);font-size:14px;min-height:60px">${esc(s.desc)}</div>
+      <div class="price">${rp(s.harga)} <small style="color:var(--mut);font-weight:400">/ ${esc(s.satuan)}</small></div>
+      ${u&&u.role==='admin'?'':`<a class="btn" href="#/order/new/${s.id}">Pesan Sekarang</a>`}
+    </div>`).join('')}</div>`;
+}
+
+function pageLogin(err){
+  $('#app').innerHTML=`<div class="card form"><h2>Masuk</h2>${msg(err)}
+  <form id="f"><label>Email</label><input name="email" type="email" required>
+  <label>Password</label><input name="password" type="password" required>
+  <p><button>Masuk</button></p></form>
+  <div class="alert alert-info" style="font-size:12px">Akun demo:<br>Admin: admin@belajarku.id / admin123<br>Siswa: siswa@belajarku.id / siswa123</div>
+  <small>Belum punya akun? <a href="#/register">Daftar</a></small></div>`;
+  $('#f').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);
+    const u=db.users.find(x=>x.email===f.get('email').trim().toLowerCase()&&x.password===f.get('password'));
+    if(!u)return pageLogin('Email atau password salah.');
+    session.set({id:u.id,nama:u.nama,email:u.email,role:u.role});renderNav();go(u.role==='admin'?'#/admin':'#/');
+  };
+}
+function pageRegister(err){
+  $('#app').innerHTML=`<div class="card form"><h2>Daftar Akun Siswa</h2>${msg(err)}
+  <form id="f"><label>Nama Lengkap</label><input name="nama" required>
+  <label>Email</label><input name="email" type="email" required>
+  <label>Password (min. 6 karakter)</label><input name="password" type="password" minlength="6" required>
+  <p><button>Daftar</button></p></form></div>`;
+  $('#f').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);const em=f.get('email').trim().toLowerCase();
+    if(db.users.some(x=>x.email===em))return pageRegister('Email sudah terdaftar.');
+    const u={id:db.seq.user++,nama:f.get('nama').trim(),email:em,password:f.get('password'),role:'siswa'};
+    db.users.push(u);save();session.set({id:u.id,nama:u.nama,email:u.email,role:u.role});renderNav();go('#/');
+  };
+}
+
+/* ----- Siswa ----- */
+function pageOrderNew(sid){
+  const u=guard('siswa');if(!u)return;
+  const s=db.services.find(x=>x.id==sid);if(!s)return go('#/');
+  $('#app').innerHTML=`<div class="card form"><h2>Pesan: ${esc(s.nama)}</h2>
+  <div class="sub">${esc(s.tipe)} &middot; ${rp(s.harga)} / ${esc(s.satuan)}</div>
+  <form id="f">
+    <label>${s.satuan==='paket'?'Jumlah Paket':'Jumlah Pertemuan'}</label><input name="qty" type="number" min="1" max="50" value="1" required>
+    <label>Tanggal Mulai</label><input name="jadwal" type="date" min="${today()}" value="${today()}" required>
+    <label>Catatan (opsional)</label><textarea name="catatan" rows="2"></textarea>
+    <div class="price" id="tot"></div>
+    <button>Buat Pesanan &amp; Lanjut Bayar</button></form></div>`;
+  const upd=()=>$('#tot').textContent='Total: '+rp(s.harga*(+document.querySelector('[name=qty]').value||0));
+  document.querySelector('[name=qty]').oninput=upd;upd();
+  $('#f').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);const qty=Math.max(1,parseInt(f.get('qty')));
+    const id=db.seq.order++;const now=new Date();
+    const o={id,invoice:`INV-${now.toISOString().slice(0,10).replace(/-/g,'')}-${pad(id)}`,userId:u.id,serviceId:s.id,serviceName:s.nama,tipe:s.tipe,harga:s.harga,qty,total:s.harga*qty,jadwal:f.get('jadwal'),catatan:f.get('catatan'),status:'pending',metode:null,createdAt:now.toISOString(),paidAt:null,ref:null};
+    db.orders.push(o);save();go('#/pay/'+id);
+  };
+}
+function pageMyOrders(){
+  const u=guard('siswa');if(!u)return;
+  const list=db.orders.filter(o=>o.userId===u.id).sort((a,b)=>b.id-a.id);
+  $('#app').innerHTML=`<h1>Pesanan Saya</h1><div class="sub">Riwayat pemesanan dan pembayaran.</div>
+  <div class="tw"><table><tr><th>Invoice</th><th>Layanan</th><th>Jadwal</th><th class="r">Total</th><th>Status</th><th></th></tr>
+  ${list.map(o=>`<tr><td>${o.invoice}</td><td>${esc(o.serviceName)} <small>(x${o.qty})</small></td><td>${tgl(o.jadwal)}</td><td class="r">${rp(o.total)}</td><td>${stBadge(o.status)}</td>
+  <td>${o.status==='pending'?`<a class="btn btn-sm" href="#/pay/${o.id}">Bayar</a> <button class="btn-sm btn-r" onclick="cancelOrder(${o.id})">Batal</button>`:''}
+  ${o.status==='paid'?`<a class="btn btn-sm btn-o" href="#/invoice/${o.id}">Invoice</a>`:''}
+  ${o.status==='failed'?`<a class="btn btn-sm" href="#/pay/${o.id}">Coba Lagi</a>`:''}</td></tr>`).join('')||'<tr><td colspan="6" style="text-align:center;color:var(--mut)">Belum ada pesanan.</td></tr>'}
+  </table></div>`;
+}
+function cancelOrder(id){if(!confirm('Batalkan pesanan ini?'))return;const o=db.orders.find(x=>x.id===id);o.status='cancelled';save();pageMyOrders()}
+
+/* ----- Payment Gateway Simulator ----- */
+const METODE=['Virtual Account BCA','Virtual Account Mandiri','QRIS','GoPay (E-Wallet)'];
+function pagePay(id,flash){
+  const u=guard();if(!u)return;
+  const o=db.orders.find(x=>x.id==id);if(!o||(u.role==='siswa'&&o.userId!==u.id))return go('#/');
+  if(o.status==='paid')return go('#/invoice/'+o.id);
+  if(o.status==='cancelled'){$('#app').innerHTML='<div class="alert alert-err">Pesanan sudah dibatalkan.</div>';return}
+  const sel=o._m||METODE[0];
+  const vaNo='88'+pad(o.id,4)+pad(o.userId,4)+'0001';
+  $('#app').innerHTML=`<div class="card form" style="max-width:560px"><h2>Pembayaran</h2>${msg(flash)}
+  <div class="sub">${o.invoice} &middot; ${esc(o.serviceName)} x${o.qty}</div>
+  <div class="price" style="font-size:28px">${rp(o.total)}</div>
+  <label>Pilih Metode Pembayaran</label>
+  <div class="pm">${METODE.map(m=>`<label><input type="radio" name="m" value="${m}" ${m===sel?'checked':''}> ${m}</label>`).join('')}</div>
+  <div class="sim"><b>🧪 Payment Gateway Simulator</b><br>
+    <div id="instr" style="margin:8px 0"></div>
+    <small>Ini hanya simulasi. Tekan salah satu tombol untuk mensimulasikan callback dari payment gateway.</small>
+    <p><button class="btn-g" id="ok">Simulasikan Bayar Berhasil</button> <button class="btn-r" id="no">Simulasikan Gagal</button></p></div>
+  </div>`;
+  const instr=()=>{const m=document.querySelector('[name=m]:checked').value;o._m=m;
+    $('#instr').innerHTML=m==='QRIS'?'Scan QR berikut (dummy):<div class="qr"></div>':
+      m.startsWith('Virtual')?`Nomor Virtual Account: <b style="font-size:18px">${vaNo}</b>`:`Notifikasi pembayaran dikirim ke aplikasi GoPay Anda (dummy).`};
+  document.querySelectorAll('[name=m]').forEach(r=>r.onchange=instr);instr();
+  $('#ok').onclick=()=>{o.status='paid';o.metode=o._m;o.paidAt=new Date().toISOString();o.ref='SIM-'+Math.random().toString(36).slice(2,8).toUpperCase();delete o._m;save();go('#/invoice/'+o.id)};
+  $('#no').onclick=()=>{o.status='failed';o.metode=o._m;delete o._m;save();pagePay(id,'Pembayaran gagal / kedaluwarsa. Silakan coba lagi.')};
+  if(o.status==='failed'){o.status='pending';save()}
+}
+
+/* ----- Invoice ----- */
+function pageInvoice(id){
+  const u=guard();if(!u)return;
+  const o=db.orders.find(x=>x.id==id);if(!o||(u.role==='siswa'&&o.userId!==u.id))return go('#/');
+  const cu=db.users.find(x=>x.id===o.userId)||{};
+  $('#app').innerHTML=`<div class="no-print" style="max-width:760px;margin:0 auto 14px;display:flex;gap:8px;justify-content:space-between">
+    <a class="btn btn-o" href="${u.role==='admin'?'#/admin/orders':'#/orders'}">← Kembali</a>
+    <button onclick="window.print()">🖨️ Cetak Invoice</button></div>
+  <div class="invoice">
+    <div class="hd"><div><div class="brand">📚 BelajarKu</div><small>Jasa Les Privat &amp; Kursus Online<br>Depok, Jawa Barat</small></div>
+      <div style="text-align:right"><h2 style="margin:0">INVOICE</h2><b>${o.invoice}</b><br><small>Tanggal: ${tgl(o.createdAt)}</small></div></div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:18px">
+      <div><small style="color:var(--mut)">Ditagihkan kepada</small><br><b>${esc(cu.nama)}</b><br>${esc(cu.email)}</div>
+      <div style="text-align:right">${o.status==='paid'?'<span class="stamp">LUNAS</span>':'<span class="stamp u">BELUM LUNAS</span>'}</div></div>
+    <table><tr><th>Deskripsi</th><th>Jadwal Mulai</th><th class="r">Harga</th><th class="r">Qty</th><th class="r">Subtotal</th></tr>
+      <tr><td>${esc(o.serviceName)}<br><small>${esc(o.tipe)}</small></td><td>${tgl(o.jadwal)}</td><td class="r">${rp(o.harga)}</td><td class="r">${o.qty}</td><td class="r">${rp(o.total)}</td></tr>
+      <tr><td colspan="4" class="r"><b>TOTAL</b></td><td class="r"><b>${rp(o.total)}</b></td></tr></table>
+    <p style="margin-top:18px;font-size:14px"><b>Metode Pembayaran:</b> ${esc(o.metode||'-')}<br><b>Waktu Bayar:</b> ${tglw(o.paidAt)}<br><b>Ref. Gateway:</b> ${esc(o.ref||'-')}</p>
+    <p style="color:var(--mut);font-size:12px;margin-top:30px">Terima kasih telah belajar bersama BelajarKu. Invoice ini sah dan diproses oleh sistem.</p>
+  </div>`;
+}
+
+/* ----- Admin ----- */
+function pageAdmin(){
+  if(!guard('admin'))return;
+  const paid=db.orders.filter(o=>o.status==='paid');
+  const m=new Date().toISOString().slice(0,7);
+  const bulan=paid.filter(o=>o.paidAt.startsWith(m)).reduce((a,o)=>a+o.total,0);
+  const per={};paid.forEach(o=>per[o.serviceName]=(per[o.serviceName]||0)+o.total);
+  const max=Math.max(1,...Object.values(per));
+  $('#app').innerHTML=`<h1>Dashboard Admin</h1><div class="sub">Ringkasan bisnis.</div>
+  <div class="stats">
+   <div class="card stat"><div class="l">Total Pendapatan</div><div class="n">${rp(paid.reduce((a,o)=>a+o.total,0))}</div></div>
+   <div class="card stat"><div class="l">Pendapatan Bulan Ini</div><div class="n">${rp(bulan)}</div></div>
+   <div class="card stat"><div class="l">Pesanan Lunas</div><div class="n">${paid.length}</div></div>
+   <div class="card stat"><div class="l">Menunggu Pembayaran</div><div class="n">${db.orders.filter(o=>o.status==='pending').length}</div></div>
+   <div class="card stat"><div class="l">Jumlah Siswa</div><div class="n">${db.users.filter(u=>u.role==='siswa').length}</div></div></div>
+  <div class="card"><h2>Pendapatan per Layanan</h2>${Object.entries(per).map(([k,v])=>`<div style="margin:8px 0;font-size:14px">${esc(k)} <b style="float:right">${rp(v)}</b>
+   <div style="background:#e8edff;border-radius:6px;height:10px;margin-top:4px"><div style="background:var(--pri);height:10px;border-radius:6px;width:${v/max*100}%"></div></div></div>`).join('')||'<small>Belum ada data.</small>'}</div>`;
+}
+function pageServices(edit){
+  if(!guard('admin'))return;
+  const e=edit?db.services.find(s=>s.id===edit):null;
+  $('#app').innerHTML=`<h1>Kelola Layanan</h1>
+  <div class="card" style="margin-bottom:18px"><h2>${e?'Edit':'Tambah'} Layanan</h2><form id="f"><div class="row">
+   <div><label>Nama</label><input name="nama" required value="${esc(e?.nama)}"></div>
+   <div><label>Tipe</label><select name="tipe"><option ${e?.tipe==='Les Privat'?'selected':''}>Les Privat</option><option ${e?.tipe==='Kursus Online'?'selected':''}>Kursus Online</option></select></div>
+   <div><label>Harga (Rp)</label><input name="harga" type="number" min="0" required value="${e?.harga??''}"></div>
+   <div><label>Satuan</label><select name="satuan"><option ${e?.satuan==='pertemuan'?'selected':''}>pertemuan</option><option ${e?.satuan==='paket'?'selected':''}>paket</option></select></div></div>
+   <label>Deskripsi</label><textarea name="desc" rows="2">${esc(e?.desc)}</textarea><p><button>Simpan</button> ${e?'<a class="btn btn-o" href="#/admin/layanan">Batal</a>':''}</p></form></div>
+  <div class="tw"><table><tr><th>Nama</th><th>Tipe</th><th class="r">Harga</th><th></th></tr>
+  ${db.services.map(s=>`<tr><td>${esc(s.nama)}</td><td>${esc(s.tipe)}</td><td class="r">${rp(s.harga)} / ${s.satuan}</td>
+   <td><button class="btn-sm" onclick="pageServices(${s.id})">Edit</button> <button class="btn-sm btn-r" onclick="delService(${s.id})">Hapus</button></td></tr>`).join('')}</table></div>`;
+  $('#f').onsubmit=ev=>{ev.preventDefault();const f=Object.fromEntries(new FormData(ev.target));f.harga=+f.harga;
+    if(e)Object.assign(e,f);else db.services.push({id:db.seq.service++,...f});save();pageServices()};
+}
+function delService(id){if(!confirm('Hapus layanan ini?'))return;db.services=db.services.filter(s=>s.id!==id);save();pageServices()}
+function pageAdminOrders(){
+  if(!guard('admin'))return;
+  const list=[...db.orders].sort((a,b)=>b.id-a.id);
+  $('#app').innerHTML=`<h1>Semua Pesanan</h1><div class="tw"><table><tr><th>Invoice</th><th>Siswa</th><th>Layanan</th><th class="r">Total</th><th>Status</th><th></th></tr>
+  ${list.map(o=>`<tr><td>${o.invoice}</td><td>${esc((db.users.find(u=>u.id===o.userId)||{}).nama)}</td><td>${esc(o.serviceName)} x${o.qty}</td><td class="r">${rp(o.total)}</td><td>${stBadge(o.status)}</td>
+  <td>${o.status==='paid'?`<a class="btn btn-sm btn-o" href="#/invoice/${o.id}">Invoice</a>`:''}</td></tr>`).join('')}</table></div>`;
+}
+
+/* ----- Laporan Keuangan ----- */
+let lapF={from:'',to:'',status:'paid',service:'',metode:''};
+function laporanData(){
+  return db.orders.filter(o=>{
+    const d=(o.paidAt||o.createdAt).slice(0,10);
+    return (!lapF.from||d>=lapF.from)&&(!lapF.to||d<=lapF.to)&&(!lapF.status||o.status===lapF.status)&&(!lapF.service||o.serviceId==lapF.service)&&(!lapF.metode||o.metode===lapF.metode);
+  }).sort((a,b)=>(a.paidAt||a.createdAt).localeCompare(b.paidAt||b.createdAt));
+}
+function pageLaporan(){
+  if(!guard('admin'))return;
+  const data=laporanData();const total=data.reduce((a,o)=>a+o.total,0);
+  $('#app').innerHTML=`<h1>Laporan Keuangan</h1><div class="sub">Filter data, lalu cetak atau ekspor.</div>
+  <div class="card no-print" style="margin-bottom:16px"><div class="row">
+   <div><label>Dari Tanggal</label><input type="date" id="fFrom" value="${lapF.from}"></div>
+   <div><label>Sampai Tanggal</label><input type="date" id="fTo" value="${lapF.to}"></div>
+   <div><label>Status</label><select id="fSt"><option value="">Semua</option>${Object.entries(stLabel).map(([k,v])=>`<option value="${k}" ${lapF.status===k?'selected':''}>${v[0]}</option>`).join('')}</select></div>
+   <div><label>Layanan</label><select id="fSv"><option value="">Semua</option>${db.services.map(s=>`<option value="${s.id}" ${lapF.service==s.id?'selected':''}>${esc(s.nama)}</option>`).join('')}</select></div>
+   <div><label>Metode</label><select id="fMt"><option value="">Semua</option>${METODE.map(m=>`<option ${lapF.metode===m?'selected':''}>${m}</option>`).join('')}</select></div></div>
+   <p><button id="bF">Terapkan Filter</button> <button class="btn-o btn" id="bR">Reset</button>
+   <button class="btn-g" id="bP">📄 Ekspor PDF</button> <button class="btn-g" id="bX">📊 Ekspor Excel</button> <button class="btn-o btn" onclick="window.print()">🖨️ Cetak</button></p></div>
+  <div class="stats"><div class="card stat"><div class="l">Jumlah Transaksi</div><div class="n">${data.length}</div></div>
+   <div class="card stat"><div class="l">Total Nominal</div><div class="n">${rp(total)}</div></div></div>
+  <div class="tw"><table><tr><th>No</th><th>Tanggal</th><th>Invoice</th><th>Siswa</th><th>Layanan</th><th>Metode</th><th>Status</th><th class="r">Total</th></tr>
+  ${data.map((o,i)=>`<tr><td>${i+1}</td><td>${tgl(o.paidAt||o.createdAt)}</td><td>${o.invoice}</td><td>${esc((db.users.find(u=>u.id===o.userId)||{}).nama)}</td><td>${esc(o.serviceName)} x${o.qty}</td><td>${esc(o.metode||'-')}</td><td>${stLabel[o.status][0]}</td><td class="r">${rp(o.total)}</td></tr>`).join('')||'<tr><td colspan="8" style="text-align:center;color:var(--mut)">Tidak ada data.</td></tr>'}
+  <tr><td colspan="7" class="r"><b>TOTAL</b></td><td class="r"><b>${rp(total)}</b></td></tr></table></div>`;
+  $('#bF').onclick=()=>{lapF={from:$('#fFrom').value,to:$('#fTo').value,status:$('#fSt').value,service:$('#fSv').value,metode:$('#fMt').value};pageLaporan()};
+  $('#bR').onclick=()=>{lapF={from:'',to:'',status:'paid',service:'',metode:''};pageLaporan()};
+  const rows=()=>data.map((o,i)=>[i+1,tgl(o.paidAt||o.createdAt),o.invoice,(db.users.find(u=>u.id===o.userId)||{}).nama,`${o.serviceName} x${o.qty}`,o.metode||'-',stLabel[o.status][0],o.total]);
+  $('#bX').onclick=()=>{if(!window.XLSX)return alert('Library Excel gagal dimuat (perlu internet).');
+    const aoa=[['LAPORAN KEUANGAN BELAJARKU'],['Dicetak: '+tglw(new Date())],[],['No','Tanggal','Invoice','Siswa','Layanan','Metode','Status','Total'],...rows(),[],['','','','','','','TOTAL',total]];
+    const ws=XLSX.utils.aoa_to_sheet(aoa);ws['!cols']=[{wch:5},{wch:18},{wch:22},{wch:20},{wch:30},{wch:22},{wch:20},{wch:14}];
+    const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Laporan');XLSX.writeFile(wb,'laporan-keuangan.xlsx')};
+  $('#bP').onclick=()=>{if(!window.jspdf)return alert('Library PDF gagal dimuat (perlu internet).');
+    const doc=new jspdf.jsPDF('l','mm','a4');doc.setFontSize(16);doc.text('Laporan Keuangan BelajarKu',14,15);doc.setFontSize(9);
+    doc.text(`Periode: ${lapF.from||'awal'} s/d ${lapF.to||'sekarang'}  |  Dicetak: ${tglw(new Date())}`,14,21);
+    doc.autoTable({startY:26,head:[['No','Tanggal','Invoice','Siswa','Layanan','Metode','Status','Total']],body:rows().map(r=>[...r.slice(0,7),rp(r[7])]),
+      foot:[['','','','','','','TOTAL',rp(total)]],styles:{fontSize:8},headStyles:{fillColor:[47,91,234]},footStyles:{fillColor:[240,243,250],textColor:0},columnStyles:{7:{halign:'right'}}});
+    doc.save('laporan-keuangan.pdf')};
+}
+
+/* ============ ROUTER ============ */
+function route(){
+  renderNav();
+  const [_,a,b,c]=(location.hash||'#/').split('/');
+  const p=a||'';
+  if(p==='')return pageHome();
+  if(p==='login')return pageLogin();
+  if(p==='register')return pageRegister();
+  if(p==='logout'){session.clear();go('#/');return}
+  if(p==='order'&&b==='new')return pageOrderNew(c);
+  if(p==='orders')return pageMyOrders();
+  if(p==='pay')return pagePay(+b);
+  if(p==='invoice')return pageInvoice(+b);
+  if(p==='admin'){if(b==='layanan')return pageServices();if(b==='orders')return pageAdminOrders();if(b==='laporan')return pageLaporan();return pageAdmin()}
+  pageHome();
+}
+window.addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>
