@@ -1,0 +1,49 @@
+:root{--pri:#2f5bea;--pri-d:#1f43b8;--bg:#f4f6fb;--tx:#1d2433;--mut:#6b7488;--bd:#e2e6f0;--ok:#16a34a;--warn:#d97706;--err:#dc2626}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx)}
+nav{background:#fff;border-bottom:1px solid var(--bd);padding:12px 24px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+nav .brand{font-weight:800;color:var(--pri);font-size:20px;margin-right:auto}
+nav a{color:var(--tx);text-decoration:none;font-size:14px}nav a:hover{color:var(--pri)}
+nav .who{color:var(--mut);font-size:13px}
+main{max-width:1100px;margin:24px auto;padding:0 16px}
+h1{font-size:26px;margin:0 0 6px}h2{font-size:20px;margin:0 0 12px}
+.sub{color:var(--mut);margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.card{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:18px}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600;background:#e8edff;color:var(--pri)}
+.b-ok{background:#dcfce7;color:var(--ok)}.b-warn{background:#fef3c7;color:var(--warn)}.b-err{background:#fee2e2;color:var(--err)}.b-gray{background:#eceff5;color:var(--mut)}
+.price{font-size:20px;font-weight:700;margin:10px 0}
+button,.btn{background:var(--pri);color:#fff;border:0;border-radius:8px;padding:9px 16px;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block}
+button:hover,.btn:hover{background:var(--pri-d)}
+.btn-o{background:#fff;color:var(--pri);border:1px solid var(--pri)}.btn-o:hover{background:#eef2ff}
+.btn-r{background:var(--err)}.btn-g{background:var(--ok)}
+.btn-sm{padding:5px 10px;font-size:12px}
+label{display:block;font-size:13px;margin:12px 0 4px;color:var(--mut)}
+input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--bd);border-radius:8px;font-size:14px;background:#fff;font-family:inherit}
+.form{max-width:440px;margin:30px auto}
+table{width:100%;border-collapse:collapse;font-size:14px;background:#fff}
+th,td{padding:10px 12px;border-bottom:1px solid var(--bd);text-align:left}
+th{background:#f0f3fa;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+.r{text-align:right}
+.tw{overflow-x:auto;border:1px solid var(--bd);border-radius:12px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
+.stat .n{font-size:24px;font-weight:700;margin-top:4px}.stat .l{color:var(--mut);font-size:13px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>div{flex:1;min-width:150px}
+.alert{padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:14px}
+.alert-err{background:#fee2e2;color:var(--err)}.alert-ok{background:#dcfce7;color:var(--ok)}.alert-info{background:#e8edff;color:var(--pri-d)}
+.hero{background:linear-gradient(135deg,#2f5bea,#6a8cff);color:#fff;border-radius:16px;padding:36px;margin-bottom:24px}
+.hero p{max-width:560px}
+.pm{display:flex;gap:10px;flex-wrap:wrap}
+.pm label{flex:1;min-width:150px;border:1px solid var(--bd);border-radius:10px;padding:12px;cursor:pointer;margin:0;color:var(--tx);display:flex;gap:8px;align-items:center}
+.pm input{width:auto}
+.sim{background:#fffbeb;border:1px dashed var(--warn);border-radius:10px;padding:14px;margin-top:16px;font-size:14px}
+.qr{width:150px;height:150px;background:repeating-conic-gradient(#111 0 25%,#fff 0 50%) 0 0/20px 20px;border:8px solid #fff;outline:1px solid var(--bd);margin:8px 0}
+.invoice{background:#fff;max-width:760px;margin:0 auto;padding:36px;border:1px solid var(--bd);border-radius:12px}
+.invoice .hd{display:flex;justify-content:space-between;border-bottom:2px solid var(--pri);padding-bottom:14px;margin-bottom:18px}
+.invoice .logo{font-size:24px;font-weight:800;color:var(--pri)}
+.stamp{display:inline-block;border:3px solid var(--ok);color:var(--ok);padding:4px 14px;font-weight:800;transform:rotate(-6deg);border-radius:6px}
+.stamp.u{border-color:var(--warn);color:var(--warn)}
+.bar{background:#e8edff;border-radius:6px;height:10px;margin-top:4px}.bar>div{background:var(--pri);height:10px;border-radius:6px}
+footer{text-align:center;color:var(--mut);font-size:12px;padding:30px}
+form.inline{display:inline}
+@media print{nav,footer,.no-print{display:none!important}body{background:#fff}main{margin:0;max-width:none;padding:0}.invoice{border:0;padding:0}}
