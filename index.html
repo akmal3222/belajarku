@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BelajarKu - Les Privat & Kursus Online</title>
+<title>BelajarPintar - Les Privat & Kursus Online</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
@@ -65,7 +65,7 @@ footer{text-align:center;color:var(--mut);font-size:12px;padding:30px}
 <body>
 <nav class="no-print" id="nav"></nav>
 <main id="app"></main>
-<footer class="no-print">BelajarKu &middot; Demo tugas &middot; Pembayaran menggunakan simulator (bukan transaksi sungguhan)</footer>
+<footer class="no-print">BelajarPintar &middot; Demo tugas &middot; Pembayaran menggunakan simulator (bukan transaksi sungguhan)</footer>
 
 <script>
 /* ============ DATABASE (localStorage) ============ */
@@ -112,7 +112,7 @@ function guard(role){const u=session.get();if(!u){go('#/login');return null}if(r
 
 /* ============ NAV ============ */
 function renderNav(){
-  const u=session.get();let h='<a class="brand" href="#/">📚 BelajarKu</a><a href="#/">Layanan</a>';
+  const u=session.get();let h='<a class="brand" href="#/">📚 BelajarPintar</a><a href="#/">Layanan</a>';
   if(!u)h+='<a href="#/login">Masuk</a><a href="#/register">Daftar</a>';
   else if(u.role==='admin')h+='<a href="#/admin">Dashboard</a><a href="#/admin/layanan">Kelola Layanan</a><a href="#/admin/orders">Pesanan</a><a href="#/admin/laporan">Laporan Keuangan</a>';
   else h+='<a href="#/orders">Pesanan Saya</a>';
@@ -232,7 +232,7 @@ function pageInvoice(id){
     <a class="btn btn-o" href="${u.role==='admin'?'#/admin/orders':'#/orders'}">← Kembali</a>
     <button onclick="window.print()">🖨️ Cetak Invoice</button></div>
   <div class="invoice">
-    <div class="hd"><div><div class="brand">📚 BelajarKu</div><small>Jasa Les Privat &amp; Kursus Online<br>Depok, Jawa Barat</small></div>
+    <div class="hd"><div><div class="brand">📚 BelajarPintar</div><small>Jasa Les Privat &amp; Kursus Online<br>Depok, Jawa Barat</small></div>
       <div style="text-align:right"><h2 style="margin:0">INVOICE</h2><b>${o.invoice}</b><br><small>Tanggal: ${tgl(o.createdAt)}</small></div></div>
     <div style="display:flex;justify-content:space-between;margin-bottom:18px">
       <div><small style="color:var(--mut)">Ditagihkan kepada</small><br><b>${esc(cu.nama)}</b><br>${esc(cu.email)}</div>
@@ -241,7 +241,7 @@ function pageInvoice(id){
       <tr><td>${esc(o.serviceName)}<br><small>${esc(o.tipe)}</small></td><td>${tgl(o.jadwal)}</td><td class="r">${rp(o.harga)}</td><td class="r">${o.qty}</td><td class="r">${rp(o.total)}</td></tr>
       <tr><td colspan="4" class="r"><b>TOTAL</b></td><td class="r"><b>${rp(o.total)}</b></td></tr></table>
     <p style="margin-top:18px;font-size:14px"><b>Metode Pembayaran:</b> ${esc(o.metode||'-')}<br><b>Waktu Bayar:</b> ${tglw(o.paidAt)}<br><b>Ref. Gateway:</b> ${esc(o.ref||'-')}</p>
-    <p style="color:var(--mut);font-size:12px;margin-top:30px">Terima kasih telah belajar bersama BelajarKu. Invoice ini sah dan diproses oleh sistem.</p>
+    <p style="color:var(--mut);font-size:12px;margin-top:30px">Terima kasih telah belajar bersama BelajarPintar. Invoice ini sah dan diproses oleh sistem.</p>
   </div>`;
 }
 
@@ -321,7 +321,7 @@ function pageLaporan(){
     const ws=XLSX.utils.aoa_to_sheet(aoa);ws['!cols']=[{wch:5},{wch:18},{wch:22},{wch:20},{wch:30},{wch:22},{wch:20},{wch:14}];
     const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Laporan');XLSX.writeFile(wb,'laporan-keuangan.xlsx')};
   $('#bP').onclick=()=>{if(!window.jspdf)return alert('Library PDF gagal dimuat (perlu internet).');
-    const doc=new jspdf.jsPDF('l','mm','a4');doc.setFontSize(16);doc.text('Laporan Keuangan BelajarKu',14,15);doc.setFontSize(9);
+    const doc=new jspdf.jsPDF('l','mm','a4');doc.setFontSize(16);doc.text('Laporan Keuangan BelajarPintar',14,15);doc.setFontSize(9);
     doc.text(`Periode: ${lapF.from||'awal'} s/d ${lapF.to||'sekarang'}  |  Dicetak: ${tglw(new Date())}`,14,21);
     doc.autoTable({startY:26,head:[['No','Tanggal','Invoice','Siswa','Layanan','Metode','Status','Total']],body:rows().map(r=>[...r.slice(0,7),rp(r[7])]),
       foot:[['','','','','','','TOTAL',rp(total)]],styles:{fontSize:8},headStyles:{fillColor:[47,91,234]},footStyles:{fillColor:[240,243,250],textColor:0},columnStyles:{7:{halign:'right'}}});
